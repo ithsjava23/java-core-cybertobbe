@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.warehouse.Category;
 import org.example.warehouse.ProductRecord;
 import org.example.warehouse.Warehouse;
 import org.junit.jupiter.api.*;
@@ -37,7 +38,7 @@ class WarehouseTest {
     @Order(2)
     @Tag("basic")
     void isCreatedWithFactory() {
-        Warehouse warehouse = Warehouse.getInstance();
+        Warehouse warehouse = Warehouse.getInstance("MyStore");
         assertThat(warehouse).isNotNull();
     }
 
@@ -76,7 +77,7 @@ class WarehouseTest {
         @Test
         @DisplayName("is empty")
         void isEmpty() {
-            assertThat(warehouse.isEmpty()).isTrue();
+            assertThat(warehouse .isEmpty()).isTrue();
         }
 
         @Test
