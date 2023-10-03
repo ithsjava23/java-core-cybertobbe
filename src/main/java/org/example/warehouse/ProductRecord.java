@@ -50,4 +50,17 @@ public class ProductRecord {
     public int hashCode() {
         return Objects.hash(name, uuid, category, price);
     }
+
+
+    public UUID uuid() {
+        return uuid;
+    }
+
+    public boolean price() {
+        return false;
+    }
+
+    public Category category() {
+        return category;
+    }
 }
