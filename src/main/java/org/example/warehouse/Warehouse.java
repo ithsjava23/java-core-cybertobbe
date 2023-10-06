@@ -22,7 +22,7 @@ public class Warehouse {
     }
 
     public boolean isEmpty() {
-        return false;
+        return true;
     }
 
     public List<ProductRecord> getProducts() {
