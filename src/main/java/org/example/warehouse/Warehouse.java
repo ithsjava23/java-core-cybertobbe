@@ -57,6 +57,7 @@ public class Warehouse {
 
     public List<ProductRecord> getProducts() {
         return productRecord.stream().toList();
+
     }
 
     public void updateProductPrice(UUID uuid, BigDecimal bigDecimal) {
