@@ -2,15 +2,12 @@ package org.example.warehouse;
 
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class Warehouse {
 
     private final List<ProductRecord> productRecord = new ArrayList<>();
-    private String name;
+    private  String name;
 
     private Warehouse(String name) {
         this.name = "MyStore";
@@ -26,24 +23,32 @@ public class Warehouse {
         return productRecord.isEmpty();
     }
 
-    public ProductRecord addProduct(UUID uuidMilk, String milk, Category dairy, BigDecimal bigDecimal) {
+    public ProductRecord addProduct(UUID uuid, String name, Category category, BigDecimal price) {
 
-        if (milk == null || milk.isEmpty()) {
-            throw new IllegalArgumentException("Product name can't be empty.");
+        if(name == null || name.isEmpty())
+            throw new IllegalArgumentException("Product name cannot be empty.");
+        if(price == null)
+            price = BigDecimal.ZERO;
+        if(category == null) {
+            throw new IllegalArgumentException("Category cannot be null.");
         }
+        if(uuid == null) {
+            uuid = UUID.randomUUID();
+        }
+        productRecord.add(new ProductRecord(name, uuid, category, price));
+        return new ProductRecord(name, uuid, category, price);
 
-        //
-        return null;
+
     }
 
     public Optional<ProductRecord> getProductById(UUID uuid) {
 
-
-        return null;
+        return productRecord.stream()
+                .filter(productRecord -> productRecord.getUuid().equals(uuid)).findFirst();
     }
 
     public List<ProductRecord> getChangedProducts() {
-        return productRecord;
+        return null;
     }
 
 
@@ -51,12 +56,13 @@ public class Warehouse {
         return false;
     }
 
-    public List<ProductRecord> getProductsBy(Category meat) {
+    public List<ProductRecord> getProductsBy(Category category) {
         return null;
     }
 
     public List<ProductRecord> getProducts() {
-        return productRecord.stream().toList();
+        return Collections.unmodifiableList(productRecord);
+
 
     }
 
