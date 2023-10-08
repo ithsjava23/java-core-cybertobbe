@@ -29,9 +29,9 @@ public class Warehouse {
             throw new IllegalArgumentException("Product name cannot be empty.");
         if(price == null)
             price = BigDecimal.ZERO;
-        if(category == null) {
+        if(category == null)
             throw new IllegalArgumentException("Category cannot be null.");
-        }
+
         if(uuid == null) {
             uuid = UUID.randomUUID();
         }
