@@ -80,15 +80,10 @@ public class Warehouse {
         return Collections.unmodifiableList(productRecord);
     }
 
-    public void updateProductPrice(UUID uuid, BigDecimal changedPrice) {
-
-        Optional <ProductRecord> originalProductRecord = productRecord.stream()
-                        .filter(productRecord -> productRecord.getUuid()
-                        .equals(uuid))
-                        .findFirst();
+    public void updateProductPrice(UUID uuid, BigDecimal price) {
 
         Optional <ProductRecord> changedProductRecord = getProductById(uuid);
-        changedProductRecord.ifPresent(productRecord -> productRecord.setPrice(changedPrice));
+        changedProductRecord.ifPresent(productRecord -> productRecord.setPrice(price));
 
        if(changedProductRecord.isEmpty())
            throw new IllegalArgumentException("Product with that id doesn't exist.");
