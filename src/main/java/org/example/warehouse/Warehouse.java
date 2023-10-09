@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 
 public class Warehouse {
 
-    private List<ProductRecord> productRecord = new ArrayList<>();
-    private final List<ProductRecord> changedProductRecord = new ArrayList<>();
+    private List<ProductRecord> productRecord = new ArrayList<>(); //List for products
+    private final List<ProductRecord> changedProductRecord = new ArrayList<>(); //List for changed products
     private final Map<UUID, ProductRecord> productRecordMap;  //Map for UUID and ProductRecord
-    private  String name;   //Name of instance of Warehouse
+    private final String name;   //Name of instance of Warehouse
 
     private Warehouse(String name) {
         this.name = "MyStore";
@@ -31,6 +31,7 @@ public class Warehouse {
 
         if(name == null || name.isEmpty())
             throw new IllegalArgumentException("Product name can't be null or empty.");
+
         if(price == null)
             price = BigDecimal.ZERO;
 
@@ -46,7 +47,7 @@ public class Warehouse {
             throw new IllegalArgumentException("Product with that id already exists, use updateProduct for updates.");
 
         productRecord.add(new ProductRecord(name, uuid, category, price));
-        return new ProductRecord(name, uuid, category, price);
+            return new ProductRecord(name, uuid, category, price);
 
 
     }
@@ -78,7 +79,10 @@ public class Warehouse {
         return Collections.unmodifiableList(productRecord);
     }
 
-    public void updateProductPrice(UUID uuid, BigDecimal price) {
+    public void updateProductPrice(UUID uuid, BigDecimal changedPrice) {
+        if(!productRecordMap.containsKey(uuid))
+            throw new IllegalArgumentException("Product with that id doesn't exist.");
+
 
 
     }

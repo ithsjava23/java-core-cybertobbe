@@ -56,8 +56,8 @@ public class ProductRecord {
         return uuid;
     }
 
-    public boolean price() {
-        return false;
+    public BigDecimal price() {
+        return price;
     }
 
     public Category category() {
