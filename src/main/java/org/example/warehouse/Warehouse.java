@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class Warehouse {
 
-    private List<ProductRecord> productRecord = new ArrayList<>(); //List for products
+    private final List<ProductRecord> productRecord = new ArrayList<>(); //List for products
     private final List<ProductRecord> changedProductRecord = new ArrayList<>(); //List for changed products
     private final Map<UUID, ProductRecord> productRecordMap;  //Map for UUID and ProductRecord
     private final String name;   //Name of instance of Warehouse
@@ -15,6 +15,7 @@ public class Warehouse {
     private Warehouse(String name) {
         this.name = "MyStore";
         this.productRecordMap = new HashMap<>();
+
     }
 
 
@@ -80,8 +81,17 @@ public class Warehouse {
     }
 
     public void updateProductPrice(UUID uuid, BigDecimal changedPrice) {
-        if(!productRecordMap.containsKey(uuid))
-            throw new IllegalArgumentException("Product with that id doesn't exist.");
+
+        Optional <ProductRecord> originalProductRecord = productRecord.stream()
+                        .filter(productRecord -> productRecord.getUuid()
+                        .equals(uuid))
+                        .findFirst();
+
+        Optional <ProductRecord> changedProductRecord = getProductById(uuid);
+        changedProductRecord.ifPresent(productRecord -> productRecord.setPrice(changedPrice));
+
+       if(changedProductRecord.isEmpty())
+           throw new IllegalArgumentException("Product with that id doesn't exist.");
 
 
 
