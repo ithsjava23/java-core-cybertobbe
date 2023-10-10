@@ -19,7 +19,7 @@ public class ProductRecord {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public UUID getUuid() {

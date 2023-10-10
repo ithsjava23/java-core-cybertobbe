@@ -8,13 +8,12 @@ import java.util.stream.Collectors;
 public class Warehouse {
 
     private final List<ProductRecord> productRecord = new ArrayList<>(); //List for products
-    private final List<ProductRecord> changedProductRecord = new ArrayList<>(); //List for changed products
-    private final Map<UUID, ProductRecord> productRecordMap;  //Map for UUID and ProductRecord
+    private final List<ProductRecord> changedProductRecord = new ArrayList<>(); //List for changed product
     private final String name;   //Name of instance of Warehouse
 
     private Warehouse(String name) {
         this.name = "MyStore";
-        this.productRecordMap = new HashMap<>();
+
 
     }
 
@@ -82,13 +81,19 @@ public class Warehouse {
 
     public void updateProductPrice(UUID uuid, BigDecimal price) {
 
-        Optional <ProductRecord> changedProductRecord = getProductById(uuid);
-        changedProductRecord.ifPresent(productRecord -> productRecord.setPrice(price));
+        Optional <ProductRecord> changedOptional = getProductById(uuid);
 
-       if(changedProductRecord.isEmpty())
-           throw new IllegalArgumentException("Product with that id doesn't exist.");
+        if (changedOptional.isPresent()) {
+            ProductRecord newProduct = changedOptional.get();
+
+            ProductRecord update = new ProductRecord(newProduct.getName(), newProduct.uuid(), newProduct.category(), price);
+
+            productRecord.replaceAll(productRecord1 -> productRecord1.uuid().equals(uuid) ? update : productRecord1);
+            changedProductRecord.add(newProduct);
 
 
-
+        } else {
+            throw new IllegalArgumentException("Product with that id doesn't exist.");
+        }
     }
 }
