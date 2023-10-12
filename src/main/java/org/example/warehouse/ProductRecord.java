@@ -51,6 +51,15 @@ public class ProductRecord {
         return Objects.hash(name, uuid, category, price);
     }
 
+    @Override
+    public String toString() {
+        return "ProductRecord{" +
+                "name='" + name + '\'' +
+                ", uuid=" + uuid +
+                ", category=" + category +
+                ", price=" + price +
+                '}';
+    }
 
     public UUID uuid() {
         return uuid;

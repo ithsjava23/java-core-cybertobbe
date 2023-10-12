@@ -7,26 +7,23 @@ import java.util.stream.Collectors;
 
 public class Warehouse {
 
-    private final List<ProductRecord> productRecord = new ArrayList<>(); //List for products
-    private final List<ProductRecord> changedProductRecord = new ArrayList<>(); //List for changed product
-    private final String name;   //Name of instance of Warehouse
+    //List for products
+    private final List<ProductRecord> productRecord = new ArrayList<>();
+    //List for changed product
+    private final List<ProductRecord> changedProductRecord = new ArrayList<>();
+    //Name of instance of Warehouse
+    private final String name;
 
     private Warehouse(String name) {
         this.name = "MyStore";
-
-
     }
-
-
     public static Warehouse getInstance(String name) {
-
         return new Warehouse(name);
     }
 
     public boolean isEmpty() {
         return productRecord.isEmpty();
     }
-
     public ProductRecord addProduct(UUID uuid, String name, Category category, BigDecimal price) {
 
         if(name == null || name.isEmpty())
@@ -43,25 +40,25 @@ public class Warehouse {
             uuid = UUID.randomUUID();
 
         UUID finalizedUuid = uuid; //finalized copy of uuid for lambda
-        if(productRecord.stream().anyMatch(productRecord -> productRecord.getUuid().equals(finalizedUuid)))
+        if(productRecord.stream()
+                .anyMatch(productRecord -> productRecord.getUuid().equals(finalizedUuid)))
             throw new IllegalArgumentException("Product with that id already exists, use updateProduct for updates.");
 
-        productRecord.add(new ProductRecord(name, uuid, category, price));
-            return new ProductRecord(name, uuid, category, price);
+
+        ProductRecord productAdd = new ProductRecord(name, uuid, category, price);
+        productRecord.add(productAdd);
+        return productAdd;
 
 
     }
-
     public Optional<ProductRecord> getProductById(UUID uuid) {
 
         return productRecord.stream()
                 .filter(productRecord -> productRecord.getUuid().equals(uuid)).findFirst();
     }
-
     public List<ProductRecord> getChangedProducts() {
         return Collections.unmodifiableList(changedProductRecord);
     }
-
 
     public Map<Category, List<ProductRecord>> getProductsGroupedByCategories() {
         return productRecord.stream()
@@ -74,26 +71,24 @@ public class Warehouse {
                 .filter(productRecord -> productRecord.getCategory().equals(category))
                 .toList();
     }
-
     public List<ProductRecord> getProducts() {
         return Collections.unmodifiableList(productRecord);
     }
 
-    public void updateProductPrice(UUID uuid, BigDecimal price) {
+    public void updateProductPrice(UUID uuid, BigDecimal newPrice) {
 
-        Optional <ProductRecord> changedOptional = getProductById(uuid);
-
+        Optional<ProductRecord> changedOptional = getProductById(uuid);
         if (changedOptional.isPresent()) {
-            ProductRecord newProduct = changedOptional.get();
+            ProductRecord updateProduct = changedOptional.get();
+            updateProduct.setPrice(newPrice);
+            changedProductRecord.add(updateProduct);
 
-            ProductRecord update = new ProductRecord(newProduct.getName(), newProduct.uuid(), newProduct.category(), price);
-
-            productRecord.replaceAll(productRecord1 -> productRecord1.uuid().equals(uuid) ? update : productRecord1);
-            changedProductRecord.add(newProduct);
-
-
-        } else {
+        }
+            else {
             throw new IllegalArgumentException("Product with that id doesn't exist.");
         }
+
+
+
     }
 }
