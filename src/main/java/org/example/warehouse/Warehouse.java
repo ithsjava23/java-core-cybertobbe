@@ -15,7 +15,7 @@ public class Warehouse {
     private final String name;
 
     private Warehouse(String name) {
-        this.name = "MyStore";
+        this.name = name;
     }
     public static Warehouse getInstance(String name) {
         return new Warehouse(name);
